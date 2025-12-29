@@ -1,4 +1,4 @@
-# Noah Actuator Sizing Tool - Pilot 프로그램 안내
+# Actuator Sizing Tool - Pilot 프로그램 안내
 
 ## 개요
 
