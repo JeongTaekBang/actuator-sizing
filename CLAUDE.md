@@ -482,11 +482,80 @@ Noah 시리즈별 특성이 다르므로 플랫 구조를 사용합니다.
 - 같은 Model이 여러 행에 존재 (Freq, kW, RPM 조합별로)
 - VBA에서 Model + Freq + 기타 조건으로 필터링
 
-### 플랫 구조 선택 이유
+### 정규화 vs 플랫 구조 선택 가이드
+
+**정규화가 좋은 경우:**
+- 대용량 데이터 (수만 행 이상)
+- 동일 데이터 수정이 잦을 때 (한 곳만 수정)
+- 저장 공간 중요할 때
+- 복잡한 쿼리/조인이 필요한 시스템 (SQL 환경)
+
+**플랫 구조가 좋은 경우:**
+- 소규모 데이터 (~수백 행)
+- 원본 소스(카탈로그)가 이미 플랫 형태
+- 담당자가 DB 전문가가 아닐 때 (Excel 복붙으로 입력)
+- VBA처럼 조인이 번거로운 환경
+- 읽기 위주 (쓰기/수정 적음)
+
+**이 프로젝트:**
+- ~260행 (작음)
+- 카탈로그가 플랫 형태
+- 담당자가 Excel 복붙으로 입력
+- VBA 환경
+
+→ **플랫 구조가 맞는 선택**
+
+### 플랫 구조 선택 이유 (구체적)
 - VBA 코드 단순화 (PassesModelFilters에서 Freq 등 필터링)
 - 데이터 규모 적절함 (~260행, 선형 검색에 문제없음)
 - 사용자 입력 변경 없음 (kW, RPM은 자동 선정)
 - Excel 데이터 관리 용이 (카탈로그와 모델명 일치)
+
+### VBA에서 플랫 구조가 적합한 이유 (SQL vs VBA 비교)
+
+**SQL (조인 쉬움)**:
+```sql
+SELECT m.Model, m.Torque, p.Voltage, p.PriceAdder
+FROM DB_Models m
+JOIN DB_PowerOptions p ON m.Model = p.Model
+WHERE p.Voltage = 380 AND p.Freq = 50
+```
+→ 한 줄로 끝
+
+**VBA (조인 직접 구현 필요)**:
+```vba
+' 정규화 구조면 중첩 루프로 조인 구현 필요
+For i = 2 To lastRowModels
+    model = wsModels.Cells(i, 1).Value
+    For j = 2 To lastRowPower
+        If wsPower.Cells(j, 1).Value = model And _
+           wsPower.Cells(j, 2).Value = 380 Then
+            ' 매칭됨
+        End If
+    Next j
+Next i
+```
+→ 중첩 루프, 코드 복잡
+
+**플랫 구조면**:
+```vba
+' 한 테이블에서 바로 필터링
+For i = 2 To lastRow
+    If ws.Cells(i, 6).Value = 50 Then  ' Freq
+        ' 바로 사용
+    End If
+Next i
+```
+→ 단일 루프, 조인 불필요
+
+| 항목 | SQL | VBA |
+|------|-----|-----|
+| 조인 | 내장 기능 | 직접 구현 (중첩 루프) |
+| 인덱스 | 자동 최적화 | 없음 (선형 검색) |
+| Dictionary | 기본 | `Scripting.Runtime` 의존성 |
+| 복합 키 | `ON a=b AND c=d` | 조건문 나열 |
+
+**결론**: VBA는 조인 기능이 없어서, 플랫 구조가 코드 단순화에 큰 도움
 
 ### Noah 시리즈별 특성
 
