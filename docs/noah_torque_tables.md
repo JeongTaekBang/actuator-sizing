@@ -1,6 +1,6 @@
-# NOAH Actuator Torque Tables
+# Actuator Torque Tables
 
-이 문서는 Noah 액추에이터 시리즈별 토크 테이블을 정리한 참조 문서입니다.
+이 문서는 액추에이터 시리즈별 토크 테이블을 정리한 참조 문서입니다.
 DB 구조 설계 및 실제 데이터 입력 시 참조용으로 사용됩니다.
 
 ---
