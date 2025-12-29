@@ -1,4 +1,4 @@
-# Noah Actuator Sizing Tool - 기술 가이드
+# Actuator Sizing Tool - 기술 가이드
 
 ## 목차
 1. [시스템 개요](#1-시스템-개요)
