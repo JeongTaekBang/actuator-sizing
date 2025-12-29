@@ -1,4 +1,4 @@
-# Noah Actuator Sizing Tool - Product Requirements Document (PRD)
+# Actuator Sizing Tool - Product Requirements Document (PRD)
 
 ## 1. 개요
 
