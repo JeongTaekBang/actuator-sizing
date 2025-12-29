@@ -1,6 +1,6 @@
 # 데이터 입력 가이드 (Data Entry Guide)
 
-이 문서는 Noah Actuator Sizing Tool의 DB 시트에 실제 제품 데이터를 입력하는 담당자를 위한 가이드입니다.
+이 문서는 Actuator Sizing Tool의 DB 시트에 실제 제품 데이터를 입력하는 담당자를 위한 가이드입니다.
 
 ---
 
