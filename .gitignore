@@ -1,0 +1,24 @@
+# Excel temp files
+~$*.xls*
+*.tmp
+
+# Excel workbooks (binary, regeneratable)
+*.xlsm
+*.xlsx
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files (regeneratable)
+NoahSizing.xlsx
