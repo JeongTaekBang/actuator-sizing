@@ -1,4 +1,4 @@
-# Noah Actuator Sizing Tool - Q&A 가이드
+# Actuator Sizing Tool - Q&A 가이드
 
 ## 목차
 1. [단위 변환](#1-단위-변환)
