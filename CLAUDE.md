@@ -557,6 +557,64 @@ Next i
 
 **결론**: VBA는 조인 기능이 없어서, 플랫 구조가 코드 단순화에 큰 도움
 
+### VBA + Excel 환경에서의 일반 원칙
+
+**VBA + Excel 환경에서 플랫 구조가 유리한 이유:**
+
+| 이유 | 설명 |
+|------|------|
+| 조인 없음 | SQL처럼 `JOIN` 키워드가 없음 |
+| 느린 Range I/O | 셀 접근이 비용 큼 → 테이블 여러 개 순회하면 더 느림 |
+| Dictionary 의존성 | `Scripting.Runtime` 추가해야 함 |
+| 사용자층 | Excel 사용자 = DB 전문가 아님 → 단순한 게 좋음 |
+
+**예외 (정규화가 나을 때):**
+- 데이터가 수천 행 이상으로 커질 때
+- Access DB 연동할 때 (SQL 쿼리 가능)
+- ADO/DAO 사용해서 실제 DB 쿼리할 때
+
+**결론**: VBA + Excel 단독 환경에서는 **플랫 구조가 실용적인 정석**
+
+### Scripting.Runtime과 Dictionary
+
+VBA에서 `Dictionary` 객체를 쓰려면 **Microsoft Scripting Runtime** 참조가 필요:
+
+```
+VBA Editor → Tools → References → ✅ Microsoft Scripting Runtime
+```
+
+**Dictionary 사용 예시**:
+```vba
+Dim dict As Scripting.Dictionary
+Set dict = New Scripting.Dictionary
+
+dict.Add "NA006", 60    ' 키: 모델, 값: 토크
+dict.Add "NA100", 1000
+
+If dict.Exists("NA006") Then
+    MsgBox dict("NA006")  ' → 60 (O(1) 조회)
+End If
+```
+
+**Dictionary의 장점**:
+- O(1) 조회 (선형 검색 O(n) 대비 빠름)
+- 키 존재 여부 확인 쉬움 (`Exists`)
+
+**Dictionary의 문제점**:
+- 참조 추가 안 하면 컴파일 에러
+- 다른 PC에서 열 때 참조 깨질 수 있음
+- Late Binding으로 우회 가능하지만 코드 복잡해짐
+  ```vba
+  ' Late Binding (참조 없이 사용)
+  Dim dict As Object
+  Set dict = CreateObject("Scripting.Dictionary")
+  ```
+
+**이 프로젝트의 선택**: Dictionary 없이 선형 검색
+- 데이터 ~260행으로 적어서 성능 차이 무의미
+- 외부 참조 의존성 제거
+- 코드 단순화
+
 ### Noah 시리즈별 특성
 
 | 시리즈 | 타입 | 복합 키 | 토크/추력 범위 | 전원 특성 |
