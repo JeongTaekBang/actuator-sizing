@@ -1,6 +1,6 @@
-# Noah Actuator Sizing Tool
+# Actuator Sizing Tool
 
-Rotork Noah 전동 액추에이터 + 기어박스 모델 선정 프로그램
+전동 액추에이터 + 기어박스 모델 선정 프로그램
 
 ## 설치 방법
 
